@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Todos from "../component/todos";
 import AddTodo from "../component/AddTodo";
 import "../pages/Home.css";
+import { Alert } from "@mui/material";
 
 class Home extends Component {
   // Create a default state of this component with an empty list of todos.
@@ -9,6 +10,7 @@ class Home extends Component {
     super();
     this.state = {
       todos: [],
+      errorMessage: "",
     };
   }
 
@@ -28,8 +30,18 @@ class Home extends Component {
   // the addTodo function simply creates a new array that includes the user submitted todo item and then
   // updates the state with the new list.
   addTodo = (todo) => {
-    const exists = this.state.todos.find(t => t.content === todo.content);
-    if (exists){ return }
+    this.setState({ errorMessage: "" });
+    const exists = this.state.todos.find((t) => t.content === todo.content);
+    if (exists) {
+      this.setState({ errorMessage: "Task already exists !" });
+      return;
+    }
+
+    if (todo.due === "Invalid Date" || !todo.due) {
+      this.setState({ errorMessage: "Invalid date !" });
+      return;
+    }
+
     // In React, keys or ids in a list help identify which items have changed, been added or removed. Keys
     // should not share duplicate values.
     // To avoid having dup values, we use the Math.random() function to generate a random value for a todo id.
@@ -43,6 +55,7 @@ class Home extends Component {
       todos: new_list,
     });
   };
+
   render() {
     return (
       <div className="Home">
@@ -52,6 +65,12 @@ class Home extends Component {
         <AddTodo addTodo={this.addTodo} />
         {/* When returning the Todos component, todos is a prop passed to the todos.js file
          to format and render the current todo list state */}
+        {this.state.errorMessage ? (
+          <Alert severity="error" className="alert-error">
+            {this.state.errorMessage}
+          </Alert>
+        ) : null}
+
         <Todos todos={this.state.todos} deleteTodo={this.deleteTodo} />
       </div>
     );

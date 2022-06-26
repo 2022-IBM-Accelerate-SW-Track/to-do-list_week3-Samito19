@@ -1,5 +1,7 @@
 .todoCollection {
-  max-width: 400px;
-  margin: auto;
+  max-width: 500px;
+  width: 30%;
   padding-bottom: 20px;
+  margin-top: 5%;
+  align-self: center;
 }

@@ -14,13 +14,13 @@ const Todos = ({ todos, deleteTodo }) => {
     todos.map((todo) => {
       return (
         <Grid key={todo.id}>
-          <Card style={{marginTop:10}}>
+          <Card data-testid={todo.content} style={{marginTop:10, backgroundColor: `${new Date().getTime() >  new Date(todo.due).getTime() ? "red" : "white"}`}}>
             {/* Remember, we set the local state of this todo item when the user submits the form in 
             AddTodo.js. All we need to do is return the todo list item {todo.content} as well as its 
             current date/time {todo.date}. Also, the item's id is utilized in order to correctly delete an item from the Todo list*/}.
             <ListItemButton component="a" href="#simple-list">
               <Checkbox style={{paddingLeft:0}} color="primary" onClick={() => deleteTodo(todo.id)}/>
-              <ListItemText primary={todo.content} secondary={todo.date}/>
+              <ListItemText primary={todo.content} secondary={todo.due}/>
             </ListItemButton>
           </Card>
         </Grid>
